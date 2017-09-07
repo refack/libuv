@@ -2021,15 +2021,18 @@ TEST_IMPL(fs_non_symlink_reparse_point) {
   static const unsigned REPARSE_TAG = 0x9913;
   static const GUID REPARSE_GUID = { 0x1bf6205f, 0x46ae, 0x4527, 0xb1, 0x0c, 0xc5, 0x09, 0xb7, 0x55, 0x22, 0x80 };
 
-  memset(&reparse_buffer, 0, REPARSE_GUID_DATA_BUFFER_HEADER_SIZE);
+  memset(&reparse_buffer, 0, sizeof(reparse_buffer));
   reparse_buffer.ReparseTag = REPARSE_TAG;
   reparse_buffer.ReparseDataLength = 0;
   reparse_buffer.ReparseGuid = REPARSE_GUID;
+  int s1 = REPARSE_GUID_DATA_BUFFER_HEADER_SIZE;
+  int s2 = sizeof(REPARSE_GUID_DATA_BUFFER_HEADER_SIZE);
+  int s3 = sizeof(reparse_buffer);
 
   r = DeviceIoControl(file_handle,
                       FSCTL_SET_REPARSE_POINT,
                       &reparse_buffer,
-                      REPARSE_GUID_DATA_BUFFER_HEADER_SIZE,
+                      sizeof(reparse_buffer),
                       NULL,
                       0,
                       NULL,
