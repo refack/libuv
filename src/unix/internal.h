@@ -318,8 +318,9 @@ static const int kFSEventStreamEventFlagItemIsSymlink = 0x00040000;
 
 UV_UNUSED(static void uv__update_time(uv_loop_t* loop)) {
   /* Use a fast time source if available.  We only need millisecond precision.
+     We add 5E5 so that don't lose sub ms time delta.
    */
-  loop->time = uv__hrtime(UV_CLOCK_FAST) / 1000000;
+  loop->time = (uv__hrtime(UV_CLOCK_FAST) + 500000) / 1000000;
 }
 
 UV_UNUSED(static char* uv__basename_r(const char* path)) {
