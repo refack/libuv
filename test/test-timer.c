@@ -307,8 +307,7 @@ static uint64_t timer_early_check_expected_time;
 
 
 static void timer_early_check_cb(uv_timer_t* handle) {
-  uint64_t hrtime = uv_hrtime() / 1000000;
-  ASSERT(hrtime >= timer_early_check_expected_time);
+  ASSERT(uv_hrtime() >= timer_early_check_expected_time * 1000000);
 }
 
 
